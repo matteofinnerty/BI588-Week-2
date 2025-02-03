@@ -1,0 +1,146 @@
+---
+title: "Notes + Challenges"
+output: html_document
+date: "2025-02-02"
+---
+**Vectors:** essentially a list of data which are all of the same data-type
+
+**Matrix:** a collection of vectors stored together, can also only hold one type of data. Two-dimensional. 
+
+```{r}
+m <- matrix(data = c(1,2,3,4), nrow=2, ncol=2)
+m
+```
+
+Matrices naturally put the data by column, but by inputting the argument byrow = TRUE, the data will be organized by row.
+
+Matrices can also be created by binding vectors using rbind(vector, vector2) or cbind(vector, vector2). cbind arranges by column.
+
+```{r}
+v1 <- c(1,2,3,4)
+v2 <- c(5,6,7,8)
+m1 <- rbind(v1, v2)
+m1
+m2 <-cbind(v1,v2)
+m2
+```
+
+**Various matrix-related commands**
+class()
+dim()
+names()
+rownames()
+colnames()
+
+Structure function: str()
+Can be used for any data structure to provide details about it.
+
+**Arrays** hold only one type of data. A vector is a 1-dimensional array, while a matrix is a 2-dimensional array. 
+
+Constructing an array: array(data = *data*, dim = c(*number of rows per matrix*, *number of columns per matrix*, and *number of matrices*))
+
+Example:
+
+```{r}
+a <- array(data = 1:90, dim = c(5,6,3))
+a
+```
+**Subsetting**
+You can select a subset of a data structure using brackets [like this]. 
+
+**Challenge 1**: Extracting every third word from a sentence
+```{r}
+ulysses <- c("Stately","plump","Buck","Mulligan","came","from","the","stairhead","bearing","a","bowl","of","lather","on","which","a","mirror","and","a","razor","lay","crossed")
+ulysses2 <- ulysses[seq(from = 3, to = 22, by =3)]
+ulysses2
+
+```
+**Challenge 2:** extracting numbers from a matrix. 
+```{r}
+m <- matrix(data = 1:80, nrow = 8, ncol = 10, byrow = FALSE)
+#starting matrix
+m
+x <- c(m[ , 2], m[, 3], m[, 6])
+##matrix with the 2nd, 3rd, and 6th columns from m
+x
+
+x <- c(m[6, ], m[7, ], m[8, ])
+##matrix with rows 6, 7, and 8
+x
+
+x <- c(m[2,2]:m[6,9])
+##matrix from 2,2 to 6,9
+x
+```
+**Challenge 3** 
+Creating a 4-dimensional, 400 element array with the numbers 400 to 1 descending. 
+```{r}
+x <- array(data = 400:1, dim = c(5,5,4,4))
+x
+```
+
+**Overwriting**
+Replacing elements and/or series of elements in a data structure. Ex: a[row,col] <- 4
+
+**LISTS**
+Lists can group together a mix of R structures and types of data. They can group a vector, a matrix, and a boolean for example.
+```{r}
+s <- c("this", "is", "a", "vector", "of", "strings")  # here we have a vector
+m <- matrix(data = 1:40, nrow = 5, ncol = 8)  # this is a matrix
+b <- FALSE  #and this is a logical statement
+l <- list(s, m, b)  # this puts them all together as a list
+l
+```
+You can extract elements from a list just like from an array, except with double brackets. You can also access elements with a data structure that is within the list. 
+```{r}
+l[[2]][2, 6]  #this will show us the entry at row 2, column 6 of the matrix in the second position of the list
+```
+You can name the elements in a list, and use those names to call those elements, and even elements within them.
+
+**Challenge 4**
+Primate Taxonomy using lists
+```{r}
+Platyrrhini <- c("Cebidae","Atelidae","Pitheciidae")
+Catarrhini <- c("Cercopithecidae","Hylobatidae","Hominidae")
+Tarsioidea <- c("Tarsiidae")
+Anthropoidea <- list(Platyrrhini, Catarrhini)
+names(Anthropoidea) <- list("Platyrrhini", "Catarrhini")
+Haplorhini <- list(Anthropoidea, Tarsioidea)
+names(Haplorhini) <- list("Anthropoidea", "Tarsioidea")
+Lemuroidea <- c("Cheirogaleidae", "Lepilemuridae", "Indriidae", "Lemuridae",
+    "Daubentoniidae")
+Lorisoidea <- c("Lorisidae", "Galagidae")
+Strepsirhini <- list(Lemuroidea, Lorisoidea)
+names(Strepsirhini) <- list("Lemuroidea", "Lorisoidea")
+Primates <- list(Strepsirhini, Haplorhini)
+Primates
+
+```
+
+**Data Frames**
+A very useful tool. Columns have variables and rows have cases/observations. Uses data.frame() command. 
+
+Can be manually created or from an existing external datasheet. 
+Individual variables can be called, such as first name or last name or DOB, using the name of the dataframe and ().
+Variables and observations can be added using the rbind and cbind functions. 
+
+$ is used to call things from a data structure. Can also be used to add a category or observation to a dataframe. Using Cbind adds a category as a factor while the dollar sign results in adding the category as a character vector. 
+
+**Factors:** numeric codes that R can use internally that correspond to character values. String factors get assigned a unique numeric code. 
+
+You can convert factors to characters and vice versa using as.character() and as.factor()
+
+**Challenge 5**
+creating a data frame, and making the second column logical-valued, and th ethird column factor-valued.
+```{r}
+m3 <- matrix(data = c(3,0,1,23,1,2,33,1,1,42,0,1,41,0,2), nrow = 5, ncol = 3, byrow = TRUE)
+m3
+df <- data.frame(m3)
+df
+##data frame constructed, now coerce the second and third columns
+##logical vectors are essentially booleans?
+as.logical(df[,2])
+as.factor(df[,3])
+df
+str(df)
+```
