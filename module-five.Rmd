@@ -1,29 +1,68 @@
 ---
-title: "Module-Three"
+title: "Module-Five"
 output: html_document
 date: "2025-02-03"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+read.table() - reads and pulls in the data from a data file
+read.csv() 
+file.choose() - allows you to click which file you want
+head() - lists first 6 lines of data by default, can read more by using brackets. Ex: head(data)[1:10]
+tail() - lists last 6 lines of data by default
+
+```{r}
+file <- file.choose()
+##chose the CPDS reduced txt file
+data <- read.table(file, header = TRUE, sep = "\t", stringsAsFactors = FALSE, fill = T)
+head(data)
+```
+You can also get a file by writing the pathway to it, as demonstrated below with a file that is in the desktop folder.
+
+**readr package**
+Offers additional functions to read delimited (separated, for example by commas or spaces) text files
+
+To access these functions, use command require(readr)
+
+**Loading Excel Files**
+There are several packages available that provide functions available for loading data into R from Excel.
+{readxl} and {XLConnect} are two of the fastest and easiest-to-use
+
+To use these packages use the require() command.
+
+```{r}
+require(readxl)
+file <- "~/Desktop/CPDS-1960-2014-reduced.xlsx"
+data <- read_excel(file, sheet = 1, col_names = TRUE)
+head(data)
 ```
 
-## R Markdown
+**Importing from a remote server (such as github)**
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+First copy the url of the raw data you are trying to pull in.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+If using {curl} use the command library(curl) first.
 
-```{r cars}
-summary(cars)
+For a comma-separated value text file (a .csv file)...
+```{r}
+library(curl)
+file <- curl("https://raw.githubusercontent.com/fuzzyatelin/fuzzyatelin.github.io/refs/heads/master/AN588_Fall23/CPDS-1960-2014-reduced.csv")
+data <- read.csv(file, header = TRUE, sep = ",", stringsAsFactors = FALSE)
+head(data)
+```
+For a tab-delimited file (.tsv or .txt file)...
+```{r}
+library(curl)
+file <- curl("https://raw.githubusercontent.com/fuzzyatelin/fuzzyatelin.github.io/refs/heads/master/AN588_Fall23/CPDS-1960-2014-reduced.txt")
+data <- read.table(file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+head(data)
 ```
 
-## Including Plots
+If using {readr}, use the command library(readr).
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+txt file example...
+```{r}
+library(readr)
+file <- "https://raw.githubusercontent.com/fuzzyatelin/fuzzyatelin.github.io/refs/heads/master/AN588_Fall23/CPDS-1960-2014-reduced.txt"
+data <- read.table(file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+head(data)
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
